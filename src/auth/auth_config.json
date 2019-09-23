@@ -1,0 +1,6 @@
+{
+  "domain": "dev-z5h3dp-b.auth0.com",
+  "clientId": "UsVqEUSSmLIoSB4Q0IjhNqg8Zp5Ljm7G",
+  "redirect_uri": "http://localhost:3000",
+  "audience": "hackernews-clone"
+}
