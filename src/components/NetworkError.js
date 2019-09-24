@@ -1,22 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import PageNotFound from "../assets/images/PageNotFound";
+import networkError from "../styles/network-error.jpg";
 const NetworkError = () => (
   <div>
     <img
-      src={PageNotFound}
+      src={networkError}
       style={{
-        width: 400,
-        height: 400,
+        width: "85%",
+        height: "500px",
         display: "block",
         margin: "auto",
         position: "relative"
       }}
     />
     <center>
-      <Link to="/">Return to Home Page</Link>
+      <Link to="/">Refresh</Link>
     </center>
   </div>
 );
-
 export default NetworkError;

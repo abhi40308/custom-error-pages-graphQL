@@ -3,16 +3,16 @@ import "../styles/App.css";
 import Header from "./header.js";
 import PostList from "./PostList";
 import NewPost from "./NewPost";
-import Profile from "./Profile"
-// import NetworkError from "./NetworkError"
-import NotFound from "./NotFound"
+import Profile from "./Profile";
+import NetworkError from "./NetworkError";
+import NotFound from "./NotFound";
 import { onError } from "apollo-link-error";
-
 
 // for authentication using auth0
 import { useAuth0 } from "../auth/react-auth0-wrapper";
 
 // for routing
+import { withRouter } from "react-router";
 import { Switch, Route, Redirect } from "react-router-dom";
 import SecuredRoute from "./SecuredRoute";
 
@@ -21,11 +21,11 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import { ApolloClient, HttpLink, InMemoryCache } from "apollo-boost";
 import { setContext } from "apollo-link-context";
 
-function App() {
-
+function App(props) {
   // used state to get accessToken through getTokenSilently(), the component re-renders when state changes, thus we have
   // our accessToken in apollo client instance.
   const [accessToken, setAccessToken] = useState("");
+  // const [redirect, setRedirect] = useState(false);
 
   const { getTokenSilently, loading } = useAuth0();
   if (loading) {
@@ -46,8 +46,8 @@ function App() {
 
   // for apollo client
   const httpLink = new HttpLink({
-    uri: "https://hackernews-clone-2.herokuapp.com/v1/graphql"
-    // uri: "https://hackernews-clone-2.herokuapp.com/v1/"
+    // uri: "https://hackernews-clone-2.herokuapp.com/v1/graphql"
+    uri: "https://hackernews-clone-2.herokuapp.com/v1/"
   });
 
   const authLink = setContext((_, { headers }) => {
@@ -69,23 +69,23 @@ function App() {
   });
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors) // add custom pages global + in separtae componenets.
+    if (graphQLErrors)
+      // add custom pages global + in separtae componenets.
       graphQLErrors.map(({ message, extensions }) => {
         console.log(
           `hi there ! [GraphQL error]: Message: ${message}, Location: ${extensions.code}`
         );
-        if(extensions.code === 'validation-failed'){
-          console.log('here is');
-          return(<Redirect to='/new-post' />);
+        if (extensions.code === "validation-failed") {
+          console.log("here is");
+          return <Redirect to="/new-post" />;
         }
-        if(extensions.code == 'invalid-jwt'){
-
-        }
+        // if (extensions.code == "invalid-jwt") {
+        // }
         // console.log(extensions.code);
       });
     if (networkError) {
-      console.log(`hi [Network error]: ${networkError}`);
-      return(<Redirect to='/Network-error' />)
+      console.log(`[Network error]: ${networkError}`);
+      props.history.push('/network-error')
     }
   });
 
@@ -99,7 +99,7 @@ function App() {
       <Header />
       <Switch>
         <Route exact path="/" component={PostList} />
-        {/* <Route path ="/Network-error" component={NetworkError} /> */}
+        <Route path ="/network-error" component={NetworkError} />
         <SecuredRoute path="/new-post" component={NewPost} />
         <SecuredRoute path={"/user/:id"} component={Profile} />
         <Route path="*" component={NotFound} />
@@ -108,4 +108,4 @@ function App() {
   );
 }
 
-export default App;
+export default withRouter(App);
