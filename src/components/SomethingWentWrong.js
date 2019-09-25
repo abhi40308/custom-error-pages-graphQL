@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import networkError from "../styles/network-error.png";
-const NetworkError = () => (
+import somethingWentWrong from "../styles/something-went-wrong.png";
+const SomethingWentWrong = () => (
   <div>
     <img
-      src={networkError}
+      src={somethingWentWrong}
       style={{
         width: "85%",
         height: "600px",
@@ -18,4 +18,4 @@ const NetworkError = () => (
     </center>
   </div>
 );
-export default NetworkError;
+export default SomethingWentWrong;

@@ -7,7 +7,7 @@ const NotFound = () => (
       src={resourceNotFound}
       style={{
         width: "85%",
-        height: "auto",
+        height: "600px",
         display: "block",
         margin: "auto",
         position: "relative"

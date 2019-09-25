@@ -6,6 +6,8 @@ import NewPost from "./NewPost";
 import Profile from "./Profile";
 import NetworkError from "./NetworkError";
 import NotFound from "./NotFound";
+import SomethingWentWrong from "./SomethingWentWrong"
+
 import { onError } from "apollo-link-error";
 
 // toast notifications
@@ -55,6 +57,7 @@ function App(props) {
   // for apollo client
   const httpLink = new HttpLink({
     uri: "https://hackernews-clone-2.herokuapp.com/v1/graphql"
+    // uri: "https://hackernews-clone-2.herokuapp.com/v1"
   });
 
   const authLink = setContext((_, { headers }) => {
@@ -77,15 +80,15 @@ function App(props) {
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
-      // add custom pages global + in separtae componenets.
       graphQLErrors.map(({ message, extensions }) => {
         // console.log(
-        //   `hi there ! [GraphQL error]: Message: ${message}, Error Code: ${extensions.code}`
+        //   `[GraphQL error]: Message: ${message}, Error Code: ${extensions.code}`
         // );
         switch (extensions.code) {
           // case "" :
           case "validation-failed": {
-            console.log("validation failed here in app.js"); // query not right
+            console.log("validation failed here in app.js") // query not right
+            props.history.push("/something-went-wrong")
           }
           case "invalid-jwt": {
             console.log(extensions.code);
@@ -99,8 +102,8 @@ function App(props) {
         }
       });
     if (networkError) {
-      console.log(`[Network error]: ${networkError}`);
-      props.history.push("/network-error");
+      console.log(`[Network error]: ${networkError}`)
+      props.history.push("/network-error")
     }
   });
 
@@ -115,6 +118,7 @@ function App(props) {
       <Switch>
         <Route exact path="/" component={PostList} />
         <Route path="/network-error" component={NetworkError} />
+        <Route path="/something-went-wrong" component={SomethingWentWrong} />
         <SecuredRoute path="/new-post" component={NewPost} />
         <SecuredRoute path={"/user/:id"} component={Profile} />
         <Route path="*" component={NotFound} />
