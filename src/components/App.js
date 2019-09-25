@@ -6,7 +6,7 @@ import NewPost from "./NewPost";
 import Profile from "./Profile";
 import NetworkError from "./NetworkError";
 import NotFound from "./NotFound";
-import SomethingWentWrong from "./SomethingWentWrong"
+import SomethingWentWrong from "./SomethingWentWrong";
 
 import { onError } from "apollo-link-error";
 
@@ -37,7 +37,7 @@ function App(props) {
     return "Loading...";
   }
 
-  // used for toast notifications 
+  // used for toast notifications
   toast.configure();
 
   // get access token
@@ -85,10 +85,10 @@ function App(props) {
         //   `[GraphQL error]: Message: ${message}, Error Code: ${extensions.code}`
         // );
         switch (extensions.code) {
-          // case "" :
+          case "data-exception" :
           case "validation-failed": {
-            console.log("validation failed here in app.js") // query not right
-            props.history.push("/something-went-wrong")
+            console.log("validation failed here in app.js"); // query not right
+            props.history.push("/something-went-wrong");
           }
           case "invalid-jwt": {
             console.log(extensions.code);
@@ -102,8 +102,8 @@ function App(props) {
         }
       });
     if (networkError) {
-      console.log(`[Network error]: ${networkError}`)
-      props.history.push("/network-error")
+      console.log(`[Network error]: ${networkError}`);
+      props.history.push("/network-error");
     }
   });
 
