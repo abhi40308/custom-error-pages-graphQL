@@ -34,7 +34,7 @@ function PostList() {
   // if (error) return `Error! ${error.message}`;
   if (error) {
     console.log(error.graphQLErrors);
-    return `${error}`;
+    return `inside the postlist ${error}`;
   }
 
   return (
