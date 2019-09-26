@@ -1,12 +1,6 @@
-# HackerNews Clone using React, Apollo-React-Client and Hasura GraphQl Engine
+# Building custom error pages in React with Hasura GraphQL engine
 
-[Live Demo](https://hackernews-1919.herokuapp.com/)  
-This application demonstrates consuming GraphQl Api provided by [Hasura GraphQL Engine](https://hasura.io) using a react app. Uses react-apollo GraphQL client to make requests to the api. Users can create account using [Auth0 JWT authentication](https://auth0.com/) which is then verified by Hasura. React-router is used to provide SPA experience.
-
-Authenticated users can:
-* Create new posts
-* Upvote posts
-* Realtime updates when other users upvote a post or create a new one (updating apollo cache).
+This application demonstrates error handling and implementing custom error pages in a react app using hasura graphQL engine. Uses react-apollo GraphQL client to make requests to the api. Apollo-link-error library is used for error handling.
 
 ## Installation
 
@@ -27,6 +21,7 @@ You will need the following npm packages:
 * [@apollo/react-hoc](https://www.npmjs.com/package/@apollo/react-hoc)
 * [graphql](https://www.npmjs.com/package/graphql)
 * [@auth0/auth0-spa-js](https://www.npmjs.com/package/@auth0/auth0-spa-js)
+* [apollo-link-error](https://www.npmjs.com/package/apollo-link-error)
 
 
 ## Creating tables 
@@ -62,3 +57,7 @@ See [Setting up Auth0 with react](https://auth0.com/docs/quickstart/spa/react/01
 ## Realtime updates
 
 Using apollo cache and react state, we can give realtime updates for upvotes and new posts. Apollo `refetchQueries` function updates apollo cache with refetched data.
+
+## Error handling
+
+Uses apollo-link-error library, to implement top-level and component-level error handling, with custom error pages, and custom logic at compoenent level to show error notifications.
