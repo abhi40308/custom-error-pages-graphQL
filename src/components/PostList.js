@@ -24,9 +24,6 @@ export const POSTS_LIST = gql`
         }
       }
     }
-    abc{
-      id
-    }
   }
 `;
 

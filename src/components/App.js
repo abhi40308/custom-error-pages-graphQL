@@ -19,7 +19,7 @@ import { useAuth0 } from "../auth/react-auth0-wrapper";
 
 // for routing
 import { withRouter } from "react-router";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import SecuredRoute from "./SecuredRoute";
 
 // for apollo client
@@ -46,7 +46,6 @@ function App(props) {
     try {
       const token = await getTokenSilently();
       setAccessToken(token);
-      console.log(token);
     } catch (e) {
       console.log("error in auth0");
       console.log(e);
@@ -78,34 +77,39 @@ function App(props) {
     }
   });
 
-  const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors)
-      graphQLErrors.map(({ message, extensions }) => {
-        // console.log(
-        //   `[GraphQL error]: Message: ${message}, Error Code: ${extensions.code}`
-        // );
-        switch (extensions.code) {
-          case "data-exception" :
-          case "validation-failed": {
-            console.log("validation failed here in app.js"); // query not right
-            props.history.push("/something-went-wrong");
+  const errorLink = onError(
+    ({ graphQLErrors, networkError, operation, forward }) => {
+      if (graphQLErrors)
+        graphQLErrors.map(({ message, extensions }) => {
+          switch (extensions.code) {
+            case "data-exception":
+            case "validation-failed":
+              props.history.push("/something-went-wrong");
+              break;
+            case "invalid-jwt":
+              // refetch the jwt
+              const oldHeaders = operation.getContext().headers;
+              getAccessToken();
+              operation.setContext({
+                headers: {
+                  ...oldHeaders,
+                  authorization: `Bearer ${accessToken}`
+                }
+              });
+              // retry the request, returning the new observable
+              return forward(operation);
+              break;
+            default:
+              // default case
+              console.log(extensions.code);
           }
-          case "invalid-jwt": {
-            console.log(extensions.code);
-            // refetch the jwt
-          }
-          // also give example of authentication error, means user not authorised, constraint violation on component level;
-          // give example of one top-level error page (authorisation error, validation=failed), one component level breadcrumb type, one top level error handle(refetch-jwt)
-          //
-          case "another-error-code":
-          //handle error
-        }
-      });
-    if (networkError) {
-      console.log(`[Network error]: ${networkError}`);
-      props.history.push("/network-error");
+        });
+      if (networkError) {
+        console.log(`[Network error]: ${networkError}`);
+        props.history.push("/network-error");
+      }
     }
-  });
+  );
 
   const client = new ApolloClient({
     link: errorLink.concat(authLink.concat(httpLink)),
