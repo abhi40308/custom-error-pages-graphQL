@@ -32,9 +32,11 @@ function Post(props) {
   });
 
   if (error) {
-    if (error.graphQLErrors[0].extensions.code == "constraint-violation")
-      toast(`${error.graphQLErrors[0].message}`);
-    console.log(`${error}`);
+    error.graphQLErrors.map(error => {
+      console.log(error);
+      if (error.extensions.code === "constraint-violation")
+        toast(`${error.message}`);
+    });
   }
 
   return (
