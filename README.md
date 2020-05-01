@@ -1,5 +1,6 @@
 # Building custom error pages in React with Hasura GraphQL engine
 
+This application is a part of a tutorial on how to handle errors in GraphQl-react applications. Check out the tutorial [here](https://hasura.io/blog/handling-graphql-hasura-errors-with-react/).
 This application demonstrates error handling and implementing custom error pages in a react app using hasura graphQL engine. Uses react-apollo GraphQL client to make requests to the api. Apollo-link-error library is used for error handling.
 
 ## Installation
