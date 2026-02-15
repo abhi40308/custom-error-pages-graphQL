@@ -20,7 +20,7 @@
     "react-notifications": "^1.4.3",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "5.0.1",
     "react-toastify": "^5.4.0"
   },
   "scripts": {
